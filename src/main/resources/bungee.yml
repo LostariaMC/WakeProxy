@@ -1,0 +1,4 @@
+name: WakeProxy
+main: fr.erpriex.wakeproxy.WakeProxy
+version: 1.0
+author: Erpriex
