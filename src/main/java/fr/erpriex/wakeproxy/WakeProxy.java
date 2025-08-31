@@ -59,7 +59,7 @@ public class WakeProxy extends Plugin {
         instanceManager = new InstanceManager(this);
 
         getProxy().getPluginManager().registerListener(this, new LoginListener(this));
-        getProxy().getPluginManager().registerListener(this, new ProxyPingListener());
+        getProxy().getPluginManager().registerListener(this, new ProxyPingListener(this));
 
         getLogger().info("WakeProxy has started successfully!");
     }

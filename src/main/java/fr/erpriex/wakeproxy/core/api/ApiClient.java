@@ -55,7 +55,15 @@ public class ApiClient {
         }
     }
 
+    public ApiResponse post(String endpoint) throws ApiException {
+        return doPost(endpoint, null);
+    }
+
     public ApiResponse post(String endpoint, String jsonBody) throws ApiException {
+        return doPost(endpoint, jsonBody);
+    }
+
+    private ApiResponse doPost(String endpoint, String jsonBody) throws ApiException {
         try {
             URL url = new URL(baseUrl + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -64,13 +72,16 @@ public class ApiClient {
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Authorization", token);
 
-            conn.setDoOutput(true);
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
 
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+            // Envoi du body uniquement s'il est présent
+            if (jsonBody != null && !jsonBody.isBlank()) {
+                conn.setDoOutput(true);
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
             }
 
             int status = conn.getResponseCode();
