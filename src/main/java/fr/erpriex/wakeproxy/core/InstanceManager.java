@@ -29,7 +29,7 @@ public class InstanceManager {
     public InstanceManager(WakeProxy main) {
         this.main = main;
 
-        main.getProxy().getScheduler().schedule(main, this::updateInstanceStatus, 0, 5, TimeUnit.MINUTES);
+        main.getProxy().getScheduler().schedule(main, this::updateInstanceStatus, 0, 20, TimeUnit.MINUTES);
         minecraftServerRunning = false;
     }
 
