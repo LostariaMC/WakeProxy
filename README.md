@@ -7,7 +7,15 @@ This project requires the following to get started:
 - Maven version `3.9.11` or higher
 - Waterfall server version `1.21.1`
 
-## Compilation
+## Getting Started
+
+### Clone the repository
+```bash
+git clone https://github.com/LostariaMC/WakeProxy.git
+cd WakeProxy/
+```
+
+### Compilation
 ```bash
 mvn clean package
 ```
