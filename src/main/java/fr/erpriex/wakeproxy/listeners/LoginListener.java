@@ -18,35 +18,42 @@ public class LoginListener implements Listener {
     }
 
     @EventHandler
-    public void onLogin(LoginEvent event) {
+    public void onLogin(LoginEvent event) throws ApiException {
         if(!main.getInstanceManager().getInstanceStatus().isStarting()) {
             main.getInstanceManager().updateInstanceStatus();
         }
         String cancelReason = "";
-        switch (main.getInstanceManager().getInstanceStatus()) {
-            case ACTIVE -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà démarré !\n\n§eConnecte toi sur §b§lgame.lostaria.fr§r\n";
-            }
-            case SHELVED_OFFLOADED -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
-                try {
-                    main.getApiClient().post(ApiPath.INSTANCE_START.getPath());
-                    main.getInstanceManager().setInstanceStatus(InstanceStatus.UNSHELVING);
-                    main.getInstanceManager().waitForMinecraftServer();
-                } catch (ApiException e) {
-                    throw new RuntimeException(e);
+
+        if(!main.getIpManager().checkIp(event.getConnection().getAddress().getAddress().getHostAddress())) {
+            cancelReason = "§9§lLostaria§r\n\n\n§cVotre région est refusée\n\n§ePlus d'informations sur §b§ldiscord.lostaria.fr§r\n";
+            main.getLogger().info("IP " + event.getConnection().getAddress().getAddress().getHostAddress() + " is not authorized");
+        } else {
+            switch (main.getInstanceManager().getInstanceStatus()) {
+                case ACTIVE -> {
+                    cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà démarré !\n\n§eConnecte toi sur §b§lgame.lostaria.fr§r\n";
+                }
+                case SHELVED_OFFLOADED -> {
+                    cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
+                    try {
+                        main.getApiClient().post(ApiPath.INSTANCE_START.getPath());
+                        main.getInstanceManager().setInstanceStatus(InstanceStatus.UNSHELVING);
+                        main.getInstanceManager().waitForMinecraftServer();
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                case UNSHELVING -> {
+                    cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
+                }
+                case SHELVING -> {
+                    cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur était en train de s'arrêter !\n\n§ePatiente un peu avant de relancer une instance\n";
+                }
+                default -> {
+                    cancelReason = "§9§lLostaria§r\n\n\n§cUne erreur interne est survenue !\n\n§cMerci de contacter un membre de l'équipe\n";
                 }
             }
-            case UNSHELVING -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
-            }
-            case SHELVING -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur était en train de s'arrêter !\n\n§ePatiente un peu avant de relancer une instance\n";
-            }
-            default -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§cUne erreur interne est survenue !\n\n§cMerci de contacter un membre de l'équipe\n";
-            }
         }
+
         event.setCancelReason(cancelReason);
         event.setCancelled(true);
     }

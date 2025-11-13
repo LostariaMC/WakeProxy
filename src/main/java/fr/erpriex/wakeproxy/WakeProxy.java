@@ -5,6 +5,7 @@ import fr.erpriex.wakeproxy.core.api.ApiClient;
 import fr.erpriex.wakeproxy.core.api.ApiException;
 import fr.erpriex.wakeproxy.core.api.ApiPath;
 import fr.erpriex.wakeproxy.core.api.ApiResponse;
+import fr.erpriex.wakeproxy.core.ip.IpManager;
 import fr.erpriex.wakeproxy.listeners.LoginListener;
 import fr.erpriex.wakeproxy.listeners.ProxyPingListener;
 import fr.erpriex.wakeproxy.utils.StringUtils;
@@ -30,6 +31,9 @@ public class WakeProxy extends Plugin {
     private ApiClient apiClient;
 
     @Getter
+    private IpManager ipManager;
+
+    @Getter
     private String apiBaseUrl;
 
     @Getter
@@ -42,6 +46,7 @@ public class WakeProxy extends Plugin {
         loadConfig();
 
         apiClient = new ApiClient(apiBaseUrl, apiToken);
+        ipManager = new IpManager();
 
         try {
             ApiResponse responsePing = apiClient.get(ApiPath.PUBLIC_PING.getPath());
