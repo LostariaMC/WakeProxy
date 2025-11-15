@@ -7,6 +7,7 @@ import fr.erpriex.wakeproxy.core.api.ApiPath;
 import fr.erpriex.wakeproxy.core.api.ApiResponse;
 import fr.erpriex.wakeproxy.core.ip.IpManager;
 import fr.erpriex.wakeproxy.listeners.LoginListener;
+import fr.erpriex.wakeproxy.listeners.PreLoginListener;
 import fr.erpriex.wakeproxy.listeners.ProxyPingListener;
 import fr.erpriex.wakeproxy.utils.StringUtils;
 import lombok.Getter;
@@ -64,6 +65,7 @@ public class WakeProxy extends Plugin {
         instanceManager = new InstanceManager(this);
 
         getProxy().getPluginManager().registerListener(this, new LoginListener(this));
+        getProxy().getPluginManager().registerListener(this, new PreLoginListener(this));
         getProxy().getPluginManager().registerListener(this, new ProxyPingListener(this));
 
         getLogger().info("WakeProxy has started successfully!");
