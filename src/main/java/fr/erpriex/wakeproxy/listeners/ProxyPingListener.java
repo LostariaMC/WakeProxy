@@ -19,16 +19,19 @@ public class ProxyPingListener implements Listener {
     public void onProxyPing(ProxyPingEvent event) {
         ServerPing serverPing = event.getResponse();
         serverPing.setDescription(getDescription());
+        if(event.getConnection().getVersion() < 765 || event.getConnection().getVersion() > 767) {
+            serverPing.setVersion(new ServerPing.Protocol("§c1.20.4 - 1.21.1", -1));
+        }
         event.setResponse(serverPing);
     }
 
     private String getDescription() {
         return switch (main.getInstanceManager().getInstanceStatus()) {
-            case SHELVED_OFFLOADED -> "             §9§lLostaria§7  -  §c❌ Serveur éteint ❌\n   §eConnecte toi pour démarrer une instance de jeu";
-            case ACTIVE -> "           §9§lLostaria§7  -  §a✔ Serveur démarré ✔\n           §eConnecte toi sur §b§lgame.lostaria.fr§r";
-            case UNSHELVING -> "      §9§lLostaria§7  -  §e⧖ En cours de démarrage ⧖\n §ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r";
-            case SHELVING -> "           §9§lLostaria§7  -  §e⧖ En cours d'arrêt ⧖\n               §ePatiente quelques instants...";
-            default -> "                         §9§lLostaria§r\n               §cUne erreur est survenue";
+            case SHELVED_OFFLOADED -> "      §9§lLostaria§7 Mini Edition  §8-  §c❌ Serveur éteint ❌\n   §eConnecte toi pour démarrer une instance de jeu";
+            case ACTIVE -> "    §9§lLostaria§7 Mini Edition  §8-  §a✔ Serveur démarré ✔\n          §eConnecte toi sur §b§lgame.lostaria.fr§r";
+            case UNSHELVING -> "§9§lLostaria§7 Mini Edition  §8-  §e⧖ En cours de démarrage ⧖\n §ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r";
+            case SHELVING -> "     §9§lLostaria§7 Mini Edition  §8-  §e⧖ En cours d'arrêt ⧖\n               §ePatiente quelques instants...";
+            default -> "                  §9§lLostaria§7 Mini Edition§r\n               §cUne erreur est survenue";
         };
     }
 
