@@ -1,7 +1,6 @@
 package fr.erpriex.wakeproxy.listeners;
 
 import fr.erpriex.wakeproxy.WakeProxy;
-import fr.erpriex.wakeproxy.core.InstanceStatus;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
