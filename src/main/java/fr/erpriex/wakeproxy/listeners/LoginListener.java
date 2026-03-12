@@ -25,10 +25,10 @@ public class LoginListener implements Listener {
 
         switch (main.getInstanceManager().getInstanceStatus()) {
             case ACTIVE -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà démarré !\n\n§eConnecte toi sur §b§lgame.lostaria.fr§r\n";
+                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà démarré !\n\n§eConnecte toi sur §b§lmc.lostaria.fr§r\n";
             }
             case SHELVED_OFFLOADED -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
+                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lmc.lostaria.fr§r\n";
                 try {
                     main.getApiClient().post(ApiPath.INSTANCE_START.getPath());
                     main.getInstanceManager().setInstanceStatus(InstanceStatus.UNSHELVING);
@@ -38,7 +38,7 @@ public class LoginListener implements Listener {
                 }
             }
             case UNSHELVING -> {
-                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lgame.lostaria.fr§r\n";
+                cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur est déjà en cours de démarrage !\n\n§ePrépare toi à te connecter sur §b§lmc.lostaria.fr§r\n";
             }
             case SHELVING -> {
                 cancelReason = "§9§lLostaria§r\n\n\n§eLe serveur était en train de s'arrêter !\n\n§ePatiente un peu avant de relancer une instance\n";
